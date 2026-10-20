@@ -15,8 +15,9 @@ import type { Route } from "./+types/root";
 
 export const links: Route.LinksFunction = () => [
   // the sun; the png is for browsers that don't support svg favicons (Safari)
-  { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-  { rel: "icon", type: "image/png", sizes: "64x64", href: "/favicon.png" },
+  // BASE_URL is "/" locally and "/Portfolio/" on GitHub Pages, so these work in both
+  { rel: "icon", type: "image/svg+xml", href: `${import.meta.env.BASE_URL}favicon.svg` },
+  { rel: "icon", type: "image/png", sizes: "64x64", href: `${import.meta.env.BASE_URL}favicon.png` },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",

@@ -1,9 +1,33 @@
-.DS_Store
-.env
+# Dependencies and build output (npm ci / npm run build recreate these)
 /node_modules/
-
-# React Router
-/.react-router/
 /build/
-CLAUDE.md 
+
+# React Router generated files (types and caches)
+/.react-router/
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local notes and tooling that belong to this machine, not the project
+CLAUDE.md
 /.agents/
+/.claude/
+
+# Design reference images (the finished site doesn't use them; they are 7 MB of PNG)
+/designs/
+
+# Docker files from the starter template; the site is deployed with GitHub Pages instead
+Dockerfile
+.dockerignore

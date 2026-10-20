@@ -3,6 +3,8 @@ import macros from "unplugin-parcel-macros";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  // same base path as the router's basename, so asset URLs (JS, CSS, images) point at the subfolder
+  base: process.env.BASE_PATH ?? "/",
   // unplugin-parcel-macros must come before the other plugins (S2 style macros)
   plugins: [macros.vite(), reactRouter()],
   resolve: {
