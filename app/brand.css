@@ -1,0 +1,245 @@
+:root {
+  scroll-behavior: smooth;
+  --color-signal-orange: #ff4a00; /* primary — headlines, accents, hover, the sun */
+  --color-ember: #d93400; /* depth — gradient start, pressed */
+  --color-amber: #ff8a1f;  /* warmth — gradient middle */
+  --color-glow: #ffc27a; /* light — gradient end, highlights */
+  --color-ink: #0d0d0d; /* text + dark sections */
+  --color-graphite: #2a2622; /* secondary text, cards on ink */
+  --color-ash: #8e8780; /* meta, grid lines */
+  --color-bone: #f3efe7; /* background (not pure white) */
+  --color-white: #f3efe7;
+  --color-white-subtle: #f3efe7c5;
+  --gradient-heat: linear-gradient(
+    180deg,
+    #a81800 0%,
+    var(--color-signal-orange) 42%,
+    var(--color-amber) 78%,
+    var(--color-glow) 100%
+  );
+
+  /* ---------- Colour: semantic (light theme default) ---------- */
+  --bg: var(--color-bone);
+  --bg-inverse: var(--color-ink);
+  --surface-inverse: var(--color-graphite); /* cards on ink */
+  --text: var(--color-ink);
+  --text-secondary: var(--color-graphite);
+  --text-meta: var(--color-ash);
+  --text-inverse: var(--color-bone);
+  --text-inverse-muted: rgba(243, 239, 231, 0.8);
+
+  --accent-hover: var(--color-signal-orange);
+  --accent-pressed: var(--color-ember);
+  --on-accent: var(--color-ink);
+  --border: var(--color-ink);
+  --border-subtle: rgba(13, 13, 13, 0.15); /* hairline row dividers */
+  --border-inverse: rgba(243, 239, 231, 0.5); /* tags on ink */
+  --focus-ring: var(--color-signal-orange);
+
+  /* ---------- Type: families ---------- */
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif; /* display, headings, body */
+  --font-body: var(--font-display);
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; /* labels, meta, code, tickers */
+
+  --weight-small: 200;
+  --weight-regular: 400;
+  --weight-medium: 500; /* Geist Mono labels */
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  /* ---------- Type: scale (size / line-height / tracking) ---------- */
+  /* Design sizes at the 2400px board; fluid clamps scale them down for real viewports. */
+  --text-display: clamp(4rem, 12vw + 1rem, 12.5rem); /* 200 / 85% / −6% */
+  --leading-display: 0.85;
+  --tracking-display: -0.06em;
+
+  --text-h1: clamp(2.75rem, 6vw + 0.5rem, 6rem); /* 96 / 95% / −4% */
+  --leading-h1: 0.95;
+  --tracking-h1: -0.04em;
+
+  --text-h2: clamp(1.75rem, 3vw + 0.5rem, 3rem); /* 48 / 105% / −2% */
+  --leading-h2: 1.05;
+  --tracking-h2: -0.02em;
+
+  --text-h3: 1.625rem; /* 26 — buttons, links, "Read the case →" */
+  --leading-h3: 1.1;
+  --tracking-h3: -0.02em;
+
+  --text-lead: 1.375rem; /* 22 — intro paragraphs */
+  --text-body-lg: 1.25rem; /* 20 — card descriptions */
+  --text-body: 1.125rem; /* 18 / 150% / 0 */
+  --leading-body: 1.5;
+  --tracking-body: 0;
+
+  --text-label: 0.875rem; /* Geist Mono 14 / caps / +8% */
+  --text-label-sm: 0.8125rem; /* 13 — tags on cards */
+  --leading-label: normal;
+  --tracking-label: 0.08em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 5rem; /* 80 — board page margin */
+  --space-9: 7.5rem;
+
+  --page-margin: clamp(1rem, 4vw, 5rem);
+  --container-max: 140rem; /* 2240 — board content width */
+
+  /* Component paddings from the interface section */
+  --tag-padding: 0.625rem 1rem; /* 10 / 16 */
+  --tag-padding-sm: 0.5rem 0.875rem; /* 8 / 14 — tags on cards */
+  --toast-padding: 0.75rem 1.125rem; /* 12 / 18 */
+  --button-height: 5.5rem; /* 88 — large CTA */
+  --nav-height: 6rem; /* 96 */
+
+  /* ---------- Shape, borders, motion ---------- */
+  --radius: 0; /* Swiss: square corners everywhere */
+  --radius-card: 1rem; /* cards and images */
+  --radius-button: 0.5rem; /* buttons and chips */
+  --radius-pill: 999px; /* theme toggle */
+  --rule-width: 1.5px;
+  --underline-width: 3px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration: 300ms;
+  --duration-slow: 600ms;
+  --ticker-duration-dev: 30s; /* ink row */
+  --ticker-duration-ux: 45s; /* slower orange row */
+
+  --z-nav: 100;
+  --z-toast: 200;
+
+  color-scheme: light;
+}
+
+
+:root[data-theme="dark"] {
+  --bg: var(--color-ink);
+  --bg-inverse: var(--color-bone);
+  --surface-inverse: var(--color-bone);
+  --text: var(--color-bone);
+  --text-secondary: rgba(243, 239, 231, 0.75);
+  --text-meta: var(--color-ash);
+  --text-inverse: var(--color-ink);
+  --text-inverse-muted: rgba(13, 13, 13, 0.8);
+  --border: var(--color-bone);
+  --border-subtle: rgba(243, 239, 231, 0.15);
+  --border-inverse: rgba(13, 13, 13, 0.5);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--color-ink);
+    --bg-inverse: var(--color-bone);
+    --surface-inverse: var(--color-bone);
+    --text: var(--color-bone);
+    --text-secondary: rgba(243, 239, 231, 0.75);
+    --text-meta: var(--color-ash);
+    --text-inverse: var(--color-ink);
+    --text-inverse-muted: rgba(13, 13, 13, 0.8);
+    --border: var(--color-bone);
+    --border-subtle: rgba(243, 239, 231, 0.15);
+    --border-inverse: rgba(13, 13, 13, 0.5);
+    color-scheme: dark;
+  }
+}
+
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Scrollbar: thin, Signal Orange thumb on the page background (follows the theme) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-signal-orange) var(--bg);
+}
+
+/* Safari and older browsers that don't support scrollbar-color (Chrome/Firefox ignore these) */
+::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-signal-orange);
+  border: 0.1875rem solid var(--bg);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ember);
+}
+
+:focus-visible {
+  outline: var(--rule-width) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+
+.t-display,
+.t-h1,
+.t-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+}
+
+.t-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.t-h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--tracking-h1);
+}
+
+.t-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+  font-weight: var(--weight-bold);
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.rule {
+  height: var(--rule-width);
+  border: 0;
+  background: var(--border);
+}

@@ -1,3 +1,5 @@
+import "./app.css"; // first, so the layer order is declared before S2's CSS loads
+import { Provider } from "@react-spectrum/s2";
 import {
   isRouteErrorResponse,
   Links,
@@ -5,12 +7,16 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useHref,
+  useNavigate,
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
 
 export const links: Route.LinksFunction = () => [
+  // the sun; the png is for browsers that don't support svg favicons (Safari)
+  { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+  { rel: "icon", type: "image/png", sizes: "64x64", href: "/favicon.png" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -19,7 +25,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@500&family=Inter:wght@400;700;900&display=swap",
   },
 ];
 
@@ -41,8 +47,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// React Router's useHref treats every string as an in-app path, so an external URL like
+// "https://github.com/…" would become "/https:/github.com/…". Leave anything with a scheme alone.
+// The hook is always called, so the order of hooks stays the same on every render.
+function useRouterHref(href: string) {
+  const resolved = useHref(href);
+  return /^[a-z][a-z\d+.-]*:/i.test(href) ? href : resolved;
+}
+
 export default function App() {
-  return <Outlet />;
+  const navigate = useNavigate();
+
+  return (
+    // no `background` prop: the page background comes from the theme tokens in brand.css
+    <Provider router={{ navigate, useHref: useRouterHref }}>
+      <Outlet />
+    </Provider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -62,11 +83,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main style={{ padding: 32 }}>
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre style={{ width: "100%", overflowX: "auto" }}>
           <code>{stack}</code>
         </pre>
       )}
