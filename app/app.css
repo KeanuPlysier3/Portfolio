@@ -975,8 +975,16 @@
     padding-top: var(--space-6);
   }
 
+  .design__item,
   .design__card {
-    aspect-ratio: 2 / 1;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* no fixed ratio: the image sets the height, and a ratio the content outgrows can widen the card */
+  .design__card {
+    aspect-ratio: auto;
+    gap: var(--space-4);
     padding: var(--space-4);
   }
 
