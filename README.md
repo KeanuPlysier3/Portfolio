@@ -48,7 +48,8 @@ Spectrum's value is **behaviour and accessibility**: keyboard use, focus handlin
 |---|---|---|---|
 | `Provider` | `@react-spectrum/s2` | [`app/root.tsx`](app/root.tsx) | The root every Spectrum app needs. Its `router` prop connects React Spectrum and React Aria links to React Router, so links navigate without reloading the page. I wrapped React Router's `useHref` so external URLs like `https://github.com/...` pass through untouched; without that they were rewritten into broken paths. |
 | `ToastContainer` + `ToastQueue` | `@react-spectrum/s2` | [`app/root.tsx`](app/root.tsx), [`app/components/contact.jsx`](app/components/contact.jsx) | The "Email copied" notification. `ToastContainer` is rendered once in the root, and `ToastQueue.positive("Email copied", { timeout: 5000 })` is a single function call that shows a toast. It dismisses itself, has a close button, and is announced to screen readers as an alert. S2's toast has no `className` or `style` prop, so its colours (Bone background, Ink text, orange check icon) are set from outside with a few CSS rules at the end of [`app/app.css`](app/app.css). Those rules depend on S2's current markup, so they are worth re-checking after an S2 update. |
-| `SwitchField` + `SwitchButton` | `react-aria-components` | [`app/components/nav.jsx`](app/components/nav.jsx) | The light/dark toggle. It is a real accessible switch: it announces its on/off state, works with the keyboard and shows a focus ring. The sun is drawn inside it. I used this pair because the older `Switch` is marked deprecated in the installed version. |
+| `ToggleButton` | `react-aria-components` | [`app/components/nav.jsx`](app/components/nav.jsx) | The light/dark toggle. It exposes its on/off state to screen readers (`aria-pressed`), works with the keyboard and shows a focus ring. The sun is drawn inside it. I first built it as a `SwitchField` + `SwitchButton`, but a switch's only focusable element is a hidden `<input>`, so a tooltip never opened on hover. A `ToggleButton` is one visible, focusable element. |
+| `TooltipTrigger` + `Tooltip` | `@react-spectrum/s2` | [`app/components/nav.jsx`](app/components/nav.jsx) | The toggle is only a sun icon, so the tooltip says "Toggle theme" on hover (after 500 ms) and on keyboard focus. |
 | `ListBox` + `ListBoxItem` | `react-aria-components` | [`app/components/moreCode.jsx`](app/components/moreCode.jsx), [`work.jsx`](app/components/work.jsx), [`about.jsx`](app/components/about.jsx), [`design.jsx`](app/components/design.jsx) | The "More code" project list, the tags on each project, and the Design cards. The arrow keys move between items, Enter opens a link, and each list is one tab stop instead of one per item. Tab and Shift+Tab move between lists. Items that link out are real links (`href`). |
 | `Button` | `react-aria-components` | [`app/components/contact.jsx`](app/components/contact.jsx) | The COPY button for my email address. Press handling is consistent across mouse, touch and keyboard, and it exposes hover, pressed and focus states for styling. Pressing it copies the address and shows the toast above. |
 | `Link` | `react-aria-components` | [`contact.jsx`](app/components/contact.jsx), [`work.jsx`](app/components/work.jsx), [`design.jsx`](app/components/design.jsx) | The external links: GitHub, Behance, Figma, "View project" and the Design cards. They get hover and keyboard-focus states (`data-hovered`, `data-focus-visible`) that don't stick after a tap on a touch screen, and they go through the same router setup as the rest of the app. Same-page anchors like `#about` stay plain `<a>` so the browser scrolls natively. |
@@ -61,7 +62,6 @@ Ideas for using more of Spectrum later. Everything below exists in the installed
 
 | Component | Where | Idea |
 |---|---|---|
-| `TooltipTrigger` + `Tooltip` | the theme toggle in the nav | The toggle is only a sun icon, so nothing says what it does. A tooltip would say "Switch to dark mode" on hover and keyboard focus. |
 | `DialogTrigger` + `Modal` + `Dialog` | the Work project images | Open an image large, with Escape to close and focus kept inside the dialog. |
 | `ToggleButtonGroup` or `TagGroup` | More code | Filter the projects by type (mobile app, hardware, static site, ...), with selection state and arrow-key navigation built in. |
 | `Disclosure` or S2's `Accordion` | About, on phones | Collapse the Education and Languages blocks on small screens to shorten the page. |
@@ -74,6 +74,7 @@ Ideas for using more of Spectrum later. Everything below exists in the installed
 | React 19 + React Router 8 | The app. React Router runs in framework mode with server rendering off, so the site is a static single-page app. |
 | Vite 8 | Dev server and build. |
 | GSAP, `@gsap/react` | The hero intro (SplitText on the title) and the scroll-driven fade-ins (ScrollTrigger). All animation is skipped for visitors who prefer reduced motion. |
+| respimagen | Generates the resized WebP images in `assets/responsive/`: `npx respimagen ./assets -s 350,500,700 -t webp`. Each `<img>` uses a `srcSet` of those widths plus a `sizes` hint, so browsers download only the size they need. |
 | Inter, Geist Mono | The two typefaces, loaded from Google Fonts. |
 
 ## Running it
@@ -100,6 +101,7 @@ app/
   app.css                layout and component styles, including the phone layout at the end
   root.tsx               document shell, Spectrum Provider, favicon and font links
 assets/                  project screenshots and the portrait
+  responsive/            WebP versions of each image at 350, 500 and 700 px wide
 public/                  favicon (the sun)
 ```
 
