@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Button, Link } from "react-aria-components";
+import { ToastQueue } from "@react-spectrum/s2";
 import SunIcon from "./SunIcon";
 import useReveal from "../hooks/useReveal";
 import useTitleReveal from "../hooks/useTitleReveal";
@@ -17,20 +18,13 @@ export default function Contact() {
     useReveal(ref);
     useTitleReveal(ref, ".contact__title");
 
-    const [copied, setCopied] = useState(false);
-
-    useEffect(() => {
-        if (!copied) return;
-        const timer = setTimeout(() => setCopied(false), 2500);
-        return () => clearTimeout(timer);
-    }, [copied]);
-
     async function copyEmail() {
         try {
             await navigator.clipboard.writeText(EMAIL);
-            setCopied(true);
+            ToastQueue.positive("Email copied", { timeout: 5000 });
         } catch {
-            console.error("Failed to copy email to clipboard");
+            // clipboard blocked (insecure page or denied permission): say so, the address is still selectable
+            ToastQueue.negative("Couldn't copy. Select the address instead.", { timeout: 5000 });
         }
     }
 
@@ -47,15 +41,6 @@ export default function Contact() {
             <div className="contact__email-row">
                 <a className="contact__email" href={`mailto:${EMAIL}`}>{EMAIL}</a>
                 <Button className="contact__copy" onPress={copyEmail}>Copy</Button>
-              
-                <p className="contact__status" role="status">
-                    {copied && (
-                        <>
-                            <SunIcon className="contact__status-sun" />
-                            Email copied
-                        </>
-                    )}
-                </p>
             </div>
 
             

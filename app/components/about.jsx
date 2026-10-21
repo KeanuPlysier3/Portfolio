@@ -1,10 +1,13 @@
 import { useRef } from "react";
 import me from "../../assets/me.png";
 import useReveal from "../hooks/useReveal";
+import { ListBox, ListBoxItem } from "react-aria-components";
 
 export default function About() {
     const ref = useRef(null);
     useReveal(ref);
+
+    const tags = ["eager to learn", "driven", "full-stack"];
 
     return (
         <>
@@ -39,12 +42,21 @@ export default function About() {
                             </article>
                         </div>
 
-                        <ul className="tags">
-                            <li>eager to learn</li>
-                            <li>driven</li>
-                            <li>full-stack</li>
-                        </ul>
-
+                        <ListBox className="tags" aria-label="More code projects" orientation="horizontal" layout="horizontal">
+                            {tags.map((tag) => (
+                                <ListBoxItem
+                                    className="tag"
+                                    key={tag}
+                                    id={tag}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    textValue={tag}
+                                >
+                                    
+                                {tag}
+                                </ListBoxItem>
+                            ))}
+                        </ListBox>
 
                     </div>
 

@@ -13,7 +13,7 @@ import Footer from "../components/footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Spectrum Portfolio" },
+    { title: "Portfolio" },
     { name: "description", content: "React Router + React Spectrum" },
   ];
 }
@@ -33,9 +33,6 @@ export default function Home() {
         <Design />
         <MoreCode />
         <Contact />
-        {/* <Heading level={1}>Spectrum Portfolio</Heading>
-        <Text>React Router + React Spectrum (S2) base template.</Text>
-        <Button variant="accent">Get started</Button> */}
       </main>
 
       <Footer />

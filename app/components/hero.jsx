@@ -44,6 +44,7 @@ export default function Hero() {
             </div>
 
             <div className="hero__subtext-container">
+                
 
                 <div className="hero__subtext-container-bottom">
                     <p className="hero__subtext">//Looking for internship opportunities from 15.02 until 21.05.2027</p>

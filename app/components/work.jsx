@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link, ListBox, ListBoxItem } from "react-aria-components";
 import heatcheck from "../../assets/heatcheck.png";
 import planA from "../../assets/planA.png";
 import dirk from "../../assets/dirk.png";
@@ -63,14 +64,27 @@ export default function Work() {
                             {project.highlight && <span className="project__highlight">{project.highlight} </span>}
                             {project.description}
                         </p>
-
-                        <ul className="tags">
+                        <ListBox
+                            className="tags"
+                            aria-label={`${project.title}`}
+                            layout="grid"
+                            orientation="horizontal"
+                        >
                             {project.tags.map((tag) => (
-                                <li key={tag}>{tag}</li>
+                                <ListBoxItem
+                                    className="tag"
+                                    key={tag}
+                                    id={tag}
+                                    textValue={tag}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {tag}
+                                </ListBoxItem>
                             ))}
-                        </ul>
+                        </ListBox>
 
-                        <a className="project__link" href={project.href}>View project →</a>
+                        <Link className="project__link" href={project.href}>View project →</Link>
                     </div>
                 </article>
             ))}

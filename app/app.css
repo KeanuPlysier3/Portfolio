@@ -365,7 +365,9 @@
   gap: var(--space-2);
 }
 
-.tags li {
+/* `li` is the About tags; `.tag` is the Work tags (React Aria ListBox items) */
+.tags li,
+.tag {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-ash);
   font-family: var(--font-mono);
@@ -373,6 +375,24 @@
   font-size: var(--text-label-sm);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
+}
+
+/* the Work tags are links, so they react to the pointer and the keyboard */
+.tag {
+  cursor: pointer;
+  outline: none;
+  transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+}
+
+.tag[data-hovered],
+.tag[data-focus-visible] {
+  color: var(--color-signal-orange);
+  border-color: var(--color-signal-orange);
+}
+
+.tag[data-focus-visible] {
+  outline: var(--rule-width) solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 
@@ -424,8 +444,19 @@
   letter-spacing: -0.02em;
 }
 
-.project__link:hover {
+/* React Aria's Link sets data-hovered (pointer only, not stuck after a tap) and data-focus-visible (keyboard only) */
+.project__link {
+  outline: none;
+  cursor: pointer;
+}
+
+.project__link[data-hovered] {
   color: var(--color-signal-orange);
+}
+
+.project__link[data-focus-visible] {
+  outline: var(--rule-width) solid var(--focus-ring);
+  outline-offset: 4px;
 }
 
 
@@ -654,8 +685,7 @@
 
 .contact__eyebrow,
 .contact__phone,
-.contact__copy,
-.contact__status {
+.contact__copy {
   font-family: var(--font-mono);
   font-weight: var(--weight-medium);
   font-size: var(--text-label-sm);
@@ -741,26 +771,27 @@
   outline-offset: 3px;
 }
 
-/* appears only while it has text, i.e. right after a copy */
-.contact__status {
+/* S2's toast has no className or style prop, so its colours are set here from outside.
+   [role="alertdialog"] inside the toast region is the one stable handle S2 leaves; our rules are
+   unlayered, so they win over S2's own styles in its `_` layer. */
+[data-react-aria-top-layer] [role="alertdialog"] {
+  /* Bone, not Ink: the toast appears over the Ink footer as well as the orange gradient */
+  background-color: var(--color-bone);
+  color: var(--color-ink);
   border-radius: var(--radius-button);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-bone);
 }
 
-.contact__status:empty {
-  display: none;
+/* S2 colours the close icon through --iconPrimary, worked out for its own dark background, so
+   it stays white after the override above; set it to Ink so the × shows on Bone */
+[data-react-aria-top-layer] [role="alertdialog"] button {
+  --iconPrimary: var(--color-ink);
 }
 
-.contact__status-sun {
-  width: 1rem;
-  height: 1rem;
+/* the status check icon (the svg that is not inside the close button) in Signal Orange,
+   like the orange sun the old "email copied" chip had */
+[data-react-aria-top-layer] [role="alertdialog"] :not(button) > svg {
   color: var(--color-signal-orange);
 }
-
 
 .contact__links {
   display: flex;

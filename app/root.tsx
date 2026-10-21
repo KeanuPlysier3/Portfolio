@@ -1,5 +1,5 @@
 import "./app.css"; // first, so the layer order is declared before S2's CSS loads
-import { Provider } from "@react-spectrum/s2";
+import { Provider, ToastContainer } from "@react-spectrum/s2";
 import {
   isRouteErrorResponse,
   Links,
@@ -14,8 +14,6 @@ import {
 import type { Route } from "./+types/root";
 
 export const links: Route.LinksFunction = () => [
-  // the sun; the png is for browsers that don't support svg favicons (Safari)
-  // BASE_URL is "/" locally and "/Portfolio/" on GitHub Pages, so these work in both
   { rel: "icon", type: "image/svg+xml", href: `${import.meta.env.BASE_URL}favicon.svg` },
   { rel: "icon", type: "image/png", sizes: "64x64", href: `${import.meta.env.BASE_URL}favicon.png` },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,9 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// React Router's useHref treats every string as an in-app path, so an external URL like
-// "https://github.com/…" would become "/https:/github.com/…". Leave anything with a scheme alone.
-// The hook is always called, so the order of hooks stays the same on every render.
+
 function useRouterHref(href: string) {
   const resolved = useHref(href);
   return /^[a-z][a-z\d+.-]*:/i.test(href) ? href : resolved;
@@ -60,9 +56,10 @@ export default function App() {
   const navigate = useNavigate();
 
   return (
-    // no `background` prop: the page background comes from the theme tokens in brand.css
     <Provider router={{ navigate, useHref: useRouterHref }}>
       <Outlet />
+      {/* where toasts appear; queue one from anywhere with ToastQueue.positive("...") */}
+      <ToastContainer placement="bottom" />
     </Provider>
   );
 }
