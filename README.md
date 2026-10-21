@@ -49,23 +49,33 @@ Spectrum's value is **behaviour and accessibility**: keyboard use, focus handlin
 | `Provider` | `@react-spectrum/s2` | [`app/root.tsx`](app/root.tsx) | The root every Spectrum app needs. Its `router` prop connects React Spectrum and React Aria links to React Router, so links navigate without reloading the page. I wrapped React Router's `useHref` so external URLs like `https://github.com/...` pass through untouched; without that they were rewritten into broken paths. |
 | `ToastContainer` + `ToastQueue` | `@react-spectrum/s2` | [`app/root.tsx`](app/root.tsx), [`app/components/contact.jsx`](app/components/contact.jsx) | The "Email copied" notification. `ToastContainer` is rendered once in the root, and `ToastQueue.positive("Email copied", { timeout: 5000 })` is a single function call that shows a toast. It dismisses itself, has a close button, and is announced to screen readers as an alert. S2's toast has no `className` or `style` prop, so its colours (Bone background, Ink text, orange check icon) are set from outside with a few CSS rules at the end of [`app/app.css`](app/app.css). Those rules depend on S2's current markup, so they are worth re-checking after an S2 update. |
 | `ToggleButton` | `react-aria-components` | [`app/components/nav.jsx`](app/components/nav.jsx) | The light/dark toggle. It exposes its on/off state to screen readers (`aria-pressed`), works with the keyboard and shows a focus ring. The sun is drawn inside it. I first built it as a `SwitchField` + `SwitchButton`, but a switch's only focusable element is a hidden `<input>`, so a tooltip never opened on hover. A `ToggleButton` is one visible, focusable element. |
-| `TooltipTrigger` + `Tooltip` | `@react-spectrum/s2` | [`app/components/nav.jsx`](app/components/nav.jsx) | The toggle is only a sun icon, so the tooltip says "Toggle theme" on hover (after 500 ms) and on keyboard focus. |
+| `TooltipTrigger` + `Tooltip` | `@react-spectrum/s2` | [`app/components/nav.jsx`](app/components/nav.jsx) | The toggle is only a sun icon, so the tooltip says "Toggle theme" on hover and on keyboard focus. Both `delay` and `closeDelay` are 0: by default the tooltip waits 1.5 s to open and 0.5 s to close. S2's types leave `closeDelay` out, but it is passed through to React Aria at runtime, so it may stop working after an S2 update. |
 | `ListBox` + `ListBoxItem` | `react-aria-components` | [`app/components/moreCode.jsx`](app/components/moreCode.jsx), [`work.jsx`](app/components/work.jsx), [`about.jsx`](app/components/about.jsx), [`design.jsx`](app/components/design.jsx) | The "More code" project list, the tags on each project, and the Design cards. The arrow keys move between items, Enter opens a link, and each list is one tab stop instead of one per item. Tab and Shift+Tab move between lists. Items that link out are real links (`href`). |
 | `Button` | `react-aria-components` | [`app/components/contact.jsx`](app/components/contact.jsx) | The COPY button for my email address. Press handling is consistent across mouse, touch and keyboard, and it exposes hover, pressed and focus states for styling. Pressing it copies the address and shows the toast above. |
+| `DialogTrigger` + `ModalOverlay` + `Modal` + `Dialog` | `react-aria-components` | [`app/components/work.jsx`](app/components/work.jsx) | The lightbox on the Work project images. Each image is a `Button` (a bare `<img>` is not pressable) inside a `DialogTrigger`, and pressing it opens the image large. Escape, a click on the backdrop (`isDismissable`) and the close button (the `close` function from `Dialog`'s render prop) all close it; focus is trapped inside while open and returns to the image afterwards. The overlay and modal are styled with `data-entering` and `data-exiting` for the fade. |
 | `Link` | `react-aria-components` | [`contact.jsx`](app/components/contact.jsx), [`work.jsx`](app/components/work.jsx), [`design.jsx`](app/components/design.jsx) | The external links: GitHub, Behance, Figma, "View project" and the Design cards. They get hover and keyboard-focus states (`data-hovered`, `data-focus-visible`) that don't stick after a tap on a touch screen, and they go through the same router setup as the rest of the app. Same-page anchors like `#about` stay plain `<a>` so the browser scrolls natively. |
 
 `@react-spectrum/s2` also provides a `style()` macro for styling its own components. It is set up in [`vite.config.ts`](vite.config.ts) (through `unplugin-parcel-macros`) and its CSS layer order is declared in [`app/app.css`](app/app.css), but no S2-styled component other than the toast is used yet.
 
-### Future components
+### How the components fit together
 
-Ideas for using more of Spectrum later. Everything below exists in the installed versions of S2 and React Aria Components.
+**Triggers need a pressable child.** `TooltipTrigger` and `DialogTrigger` hold the open/closed state and pass it to their children through React context, so there is no `useState` and no visible link between the trigger and what it opens. The first child must be something focusable and pressable (`Button`, `Link`, `ToggleButton`), because the library attaches its hover, focus and press handlers to it. That is why the lightbox image is wrapped in a `Button`, and why the theme toggle is a `ToggleButton` instead of a switch: a switch's only focusable element is a visually hidden `<input>`, so the tooltip's hover handlers and position anchor ended up on an element nobody can point at.
 
-| Component | Where | Idea |
+**Closing the lightbox.** `ModalOverlay` is the dimmed backdrop and takes `isDismissable`, so a click outside closes the dialog. `Modal` is the box in front of it. `Dialog` gives its children a `close` function through a render prop (`{({ close }) => ...}`), which the ✕ button calls, and Escape closes it by default. Because the overlay renders in a portal at the end of `<body>`, it sits outside the `.project` element that the scroll-reveal animation targets.
+
+**Styling through `data-*` attributes.** React Aria Components render no styles of their own, but they set attributes for each state, and the CSS reacts to those:
+
+| Attribute | Set when | Used for |
 |---|---|---|
-| `DialogTrigger` + `Modal` + `Dialog` | the Work project images | Open an image large, with Escape to close and focus kept inside the dialog. |
-| `ToggleButtonGroup` or `TagGroup` | More code | Filter the projects by type (mobile app, hardware, static site, ...), with selection state and arrow-key navigation built in. |
-| `Disclosure` or S2's `Accordion` | About, on phones | Collapse the Education and Languages blocks on small screens to shorten the page. |
-| `MenuTrigger` + `Menu` | the nav, on phones | The phone design has a "MENU" button. A menu popup could bring the section links back without crowding the header, if I decide the phone nav is worth having. |
+| `data-hovered` | the pointer is over the element | the sun rotating on the toggle, link and card hover |
+| `data-pressed` | the element is being pressed | the COPY button |
+| `data-selected` | a toggle or list item is on | the sun turning Ink in dark mode |
+| `data-focus-visible` | keyboard focus, not mouse | focus rings on every control |
+| `data-entering` / `data-exiting` | an overlay is opening or closing | the lightbox fade |
+
+**Keyboard behaviour.** Each `ListBox` is a single tab stop: arrow keys move between its items and Enter opens a link, so a list of tags doesn't add a dozen tab stops. The toggle, COPY button, image buttons and links are all reachable with Tab and show a focus ring.
+
+**Which library, and why.** Anything with Adobe's look comes from S2 (the toast, the tooltip, and the `Provider`). Anything whose look is mine comes from React Aria Components. The tooltip is S2 because a small dark label is the one case where Adobe's default is fine, and it also works with the unstyled `ToggleButton` from React Aria.
 
 ## Other libraries
 
