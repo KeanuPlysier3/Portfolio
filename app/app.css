@@ -980,6 +980,14 @@
     padding: var(--space-4);
   }
 
+  /* 60% wide and uncropped; the card grows to fit it */
+  .design__image {
+    flex: none;
+    width: 60%;
+    height: auto;
+    aspect-ratio: 700 / 480;
+  }
+
   .design__arrow {
     right: var(--space-4);
     bottom: var(--space-4);

@@ -91,7 +91,7 @@ export default function Design() {
                         <Link className="design__card" href={project.href}>
 
                             <SunIcon className="design__sun" />
-                            <img className="design__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 90vw" alt={project.alt} loading="lazy" />
+                            <img className="design__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 50vw" alt={project.alt} loading="lazy" />
                             <div className="design__meta">
                                 <p className="design__label">{project.label}</p>
                                 <h3 className="design__title">{project.title}</h3>
