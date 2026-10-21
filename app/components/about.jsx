@@ -1,5 +1,7 @@
 import { useRef } from "react";
-import me from "../../assets/me.png";
+import me350 from "../../assets/responsive/me-350.webp";
+import me500 from "../../assets/responsive/me-500.webp";
+
 import useReveal from "../hooks/useReveal";
 import { ListBox, ListBoxItem } from "react-aria-components";
 
@@ -18,7 +20,7 @@ export default function About() {
                 </div>
 
                 <div className="section__content">
-                    <img className="section__image" src={me} alt="A picture of me" />
+                    <img className="section__image" src={me500} srcSet={`${me350} 350w, ${me500} 500w`} sizes="(min-width: 1100px) 25vw, (min-width: 768px) 38vw, 90vw" alt="A picture of me" loading="lazy" />
                     <div className="section__text">
                         <p className="section__body">Final-year Digital Design & Development student at Howest (major Development, minor UX). I’ve been programming for about seven years, the last four mostly for the web. I learn fast from documentation and use AI responsibly.</p>
                         <div className="about__details">

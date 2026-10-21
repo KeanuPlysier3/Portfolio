@@ -19,7 +19,8 @@
     "react": "^19.2.8",
     "react-aria-components": "^1.22.1",
     "react-dom": "^19.2.8",
-    "react-router": "^8.5.0"
+    "react-router": "^8.5.0",
+    "respimagen": "^2.1.0"
   },
   "devDependencies": {
     "@react-router/dev": "^8.5.0",

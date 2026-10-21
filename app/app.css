@@ -478,7 +478,7 @@
 /* ---------- Design: 2x2 card grid ---------- */
 .design__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-7) var(--space-6);
   padding-top: var(--space-8);
 }
@@ -519,6 +519,16 @@
 .design__card:hover .design__sun,
 .design__card:focus-visible .design__sun {
   rotate: 45deg;
+}
+
+/* fills the space between the sun and the label; never taller or wider than the card */
+.design__image {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-card);
 }
 
 .design__meta {

@@ -1,15 +1,22 @@
 import { useRef } from "react";
 import { Link, ListBox, ListBoxItem } from "react-aria-components";
-import heatcheck from "../../assets/heatcheck.png";
-import planA from "../../assets/planA.png";
-import dirk from "../../assets/dirk.png";
+import planA350 from "../../assets/responsive/planA-350.webp";
+import planA500 from "../../assets/responsive/planA-500.webp";
+import planA700 from "../../assets/responsive/planA-700.webp";
+import heatcheck350 from "../../assets/responsive/heatcheck-350.webp";
+import heatcheck500 from "../../assets/responsive/heatcheck-500.webp";
+import heatcheck700 from "../../assets/responsive/heatcheck-700.webp";
+import dirk350 from "../../assets/responsive/dirk-350.webp";
+import dirk500 from "../../assets/responsive/dirk-500.webp";
+import dirk700 from "../../assets/responsive/dirk-700.webp";
 import useReveal from "../hooks/useReveal";
 
 const PROJECTS = [
     {
         label: "project 01 - DEV (end of second year)",
         title: "Plan A",
-        image: planA,
+        image: planA700,
+        srcSet: `${planA350} 350w, ${planA500} 500w, ${planA700} 700w`,
         alt: "Plan A, the group-trip planner, shown on three phones",
         description:
             "Interactive group-trip planner for the City of Antwerp. As lead developer I built the Node.js server that validates everything between the app and the MySQL database.",
@@ -19,7 +26,8 @@ const PROJECTS = [
     {
         label: "project 02 - DEV (start of third year)",
         title: "HeatCheck",
-        image: heatcheck,
+        image: heatcheck700,
+        srcSet: `${heatcheck350} 350w, ${heatcheck500} 500w, ${heatcheck700} 700w`,
         alt: "HeatCheck, the basketball shooting game, shown on a laptop",
         description:
             "A basketball shooting game in the browser, built with three.js on WebGPU physics, sound and a lot of tuning to make every shot feel right.",
@@ -29,7 +37,8 @@ const PROJECTS = [
     {
         label: "project 03 - DEV (start of second year)",
         title: "MoMu Dirk",
-        image: dirk,
+        image: dirk700,
+        srcSet: `${dirk350} 350w, ${dirk500} 500w, ${dirk700} 700w`,
         alt: "The MoMu Dirk website shown on a laptop and a phone",
         highlight:
             "First time working with responsive design and GSAP. A good point of reference to see how far I have come.",
@@ -56,7 +65,7 @@ export default function Work() {
                     className={`section__content project${index % 2 === 1 ? " project--reverse" : ""}`}
                     key={project.title}
                 >
-                    <img className="section__image" src={project.image} alt={project.alt} />
+                    <img className="section__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 90vw" alt={project.alt} loading="lazy" />
                     <div className="project__info">
                         <p className="project__label">{project.label}</p>
                         <h3 className="project__title">{project.title}</h3>
