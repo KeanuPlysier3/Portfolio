@@ -5,7 +5,7 @@ import { Link, ListBox, ListBoxItem } from "react-aria-components";
 
 import int4 from "../../assets/int4.png";
 import miles from "../../assets/miles&meals.png";
-import workshop from "../../assets/Workshop.png";
+import workshop from "../../assets/workshop.png";
 import xd3 from "../../assets/xd3.png";
 
 
