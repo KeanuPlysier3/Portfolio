@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link, ListBox, ListBoxItem } from "react-aria-components";
+import { Button, Dialog, DialogTrigger, Link, ListBox, ListBoxItem, Modal, ModalOverlay } from "react-aria-components";
 import planA350 from "../../assets/responsive/planA-350.webp";
 import planA500 from "../../assets/responsive/planA-500.webp";
 import planA700 from "../../assets/responsive/planA-700.webp";
@@ -65,7 +65,23 @@ export default function Work() {
                     className={`section__content project${index % 2 === 1 ? " project--reverse" : ""}`}
                     key={project.title}
                 >
-                    <img className="section__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 90vw" alt={project.alt} loading="lazy" />
+                    <DialogTrigger>
+                        <Button className="project__zoom" aria-label={`Enlarge ${project.title} image`}>
+                            <img className="section__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 90vw" alt={project.alt} loading="lazy" />
+                        </Button>
+                        <ModalOverlay className="lightbox" isDismissable>
+                            <Modal className="lightbox__modal">
+                                <Dialog className="lightbox__dialog" aria-label={project.title}>
+                                    {({ close }) => (
+                                        <>
+                                            <img className="lightbox__image" src={project.image} alt={project.alt} />
+                                            <Button className="lightbox__close" onPress={close} aria-label="Close">✕</Button>
+                                        </>
+                                    )}
+                                </Dialog>
+                            </Modal>
+                        </ModalOverlay>
+                    </DialogTrigger>
                     <div className="project__info">
                         <p className="project__label">{project.label}</p>
                         <h3 className="project__title">{project.title}</h3>

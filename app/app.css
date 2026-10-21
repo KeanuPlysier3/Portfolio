@@ -313,6 +313,83 @@
   border-radius: var(--radius-card);
 }
 
+/* the project image is a button that opens the lightbox */
+.project__zoom {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-card);
+}
+
+.project__zoom[data-focus-visible] {
+  outline: var(--rule-width) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgb(0 0 0 / 0.8);
+}
+
+.lightbox[data-entering] {
+  animation: lightbox-fade var(--duration) var(--ease-out);
+}
+
+.lightbox[data-exiting] {
+  animation: lightbox-fade var(--duration) var(--ease-out) reverse;
+}
+
+@keyframes lightbox-fade {
+  from { opacity: 0; }
+}
+
+.lightbox__dialog {
+  position: relative;
+  outline: none;
+}
+
+.lightbox__image {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: var(--radius-card);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.lightbox__close[data-focus-visible] {
+  outline: var(--rule-width) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[data-entering],
+  .lightbox[data-exiting] {
+    animation: none;
+  }
+}
+
 .section__text {
   display: flex;
   flex-direction: column;
@@ -470,7 +547,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
   }
 
-  .project--reverse .section__image {
+  .project--reverse .project__zoom {
     order: 2;
   }
 }

@@ -27,7 +27,7 @@ export default function Nav() {
                     <li className="nav__item"><a href="#projects" className="nav__link">Projects</a></li>
                     <li className="nav__item"><a href="#contact" className="nav__link">Contact</a></li>
                 </ul>
-                <TooltipTrigger delay={0}>
+                <TooltipTrigger delay={0} closeDelay={0}>
                     <ToggleButton className="theme-toggle" aria-label="Dark mode" isSelected={isDark} onChange={setIsDark}>
                         <SunIcon className="theme-toggle__sun" />
                     </ToggleButton>
