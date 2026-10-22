@@ -109,7 +109,7 @@ export default function Work() {
                             ))}
                         </ListBox>
 
-                        <Link className="project__link" href={project.href}>View project →</Link>
+                        <Link className="project__link" href={project.href} target="_blank" rel="noreferrer">View project →</Link>
                     </div>
                 </article>
             ))}

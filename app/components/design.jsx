@@ -88,7 +88,7 @@ export default function Design() {
                         rel="noreferrer"
                     >
 
-                        <Link className="design__card" href={project.href}>
+                        <Link className="design__card" href={project.href} target="_blank" rel="noreferrer">
 
                             <SunIcon className="design__sun" />
                             <img className="design__image" src={project.image} srcSet={project.srcSet} sizes="(min-width: 1100px) 28vw, (min-width: 768px) 40vw, 90vw" alt={project.alt} loading="lazy" />
